@@ -908,8 +908,10 @@ const CONFIG = {
     audio.src = "music.mp3"; audio.loop = true; audio.preload = "auto";
     const TARGET = 0.6;
     let on = true, running = false, fadeRaf = 0;
-    try { if (localStorage.getItem("adp-sound") === "off") on = false; } catch (_) {}
-    const save = v => { try { localStorage.setItem("adp-sound", v); } catch (_) {} };
+    /* A pausa vale só para esta visita: na próxima, a trilha recomeça ligada */
+    try { localStorage.removeItem("adp-sound"); } catch (_) {}
+    try { if (sessionStorage.getItem("adp-sound") === "off") on = false; } catch (_) {}
+    const save = v => { try { sessionStorage.setItem("adp-sound", v); } catch (_) {} };
     function fade(to, ms, done) {
       cancelAnimationFrame(fadeRaf);
       const from = audio.volume, t0 = performance.now();
@@ -955,6 +957,8 @@ const CONFIG = {
       else { arm(); tryStart(); }
       setUI();
     });
+    /* Volta do histórico (botão voltar) também religa */
+    addEventListener("pageshow", e => { if (e.persisted && on) { arm(); tryStart(); setUI(); } });
     setUI();
     if (on) { arm(); tryStart(); }
   }
