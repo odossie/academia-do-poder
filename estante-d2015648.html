@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estante da Academia</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Estante de leitura dos membros da Academia do Poder.">
+<meta name="theme-color" content="#050303">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap">
+<style>
+/* Layout: a mesma sala escura da landing, agora com estantes. Capas tipográficas em grade, filtro por tema no topo. */
+:root {
+  color-scheme: dark;
+  --bg: #050303;
+  --surface: #0e0707;
+  --surface-2: #160a0a;
+  --line: #2b1414;
+  --line-hot: #5a1d1d;
+  --fg: #f2ebe8;
+  --muted: #a3918d;
+  --dim: #8d7c78;
+  --accent: #e3191d;
+  --ember: #ff4b3e;
+  --on-accent: #fff6f4;
+
+  --f-display: "Playfair Display", "Times New Roman", Times, Tinos, serif;
+  --f-body: "Times New Roman", Times, Tinos, "Liberation Serif", serif;
+
+  --t-xs: 0.8125rem;
+  --t-sm: 0.9375rem;
+  --t-base: 1.0625rem;
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  --maxw: 1160px;
+  --ease-out: cubic-bezier(.2,.7,.2,1);
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--bg); }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; text-wrap: pretty; }
+em { font-style: italic; color: var(--ember); }
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+:focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; border-radius: 6px; }
+::selection { background: rgba(227,25,29,.42); color: var(--on-accent); }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
+.label { font: 700 var(--t-xs)/1.4 var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: var(--ember); }
+
+/* Navegação */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; padding-top: 16px; padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
+.nav-in { max-width: var(--maxw); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 8px 8px 14px; border-radius: 999px; background: rgba(10,5,5,.88); border: 1px solid var(--line); backdrop-filter: blur(14px); }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; min-height: 44px; }
+.brand img { width: 30px; height: auto; }
+.brand span { font-family: var(--f-display); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.12em; }
+.back { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line-hot); text-decoration: none; font: 700 var(--t-sm)/1 var(--f-body); color: var(--fg); transition: border-color .2s, background .2s; }
+.back:hover { border-color: var(--ember); background: rgba(227,25,29,.08); }
+.back svg { width: 15px; height: 15px; }
+@media (max-width: 420px) { .brand span { display: none; } }
+
+/* Abertura */
+.intro { position: relative; padding-block: 72px 40px; isolation: isolate; }
+.intro::before { content: ""; position: absolute; inset: -120px 0 0; z-index: -1; background: radial-gradient(50% 70% at 50% 0%, rgba(227,25,29,.2), transparent 70%); pointer-events: none; }
+.intro-in { display: grid; gap: 18px; max-width: 760px; }
+.intro h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(2.4rem, 1.4rem + 4.2vw, 4.25rem); line-height: 1.04; letter-spacing: -0.01em; }
+.intro p { color: var(--muted); font-size: clamp(1.0625rem, 1rem + .3vw, 1.1875rem); line-height: 1.65; max-width: 56ch; }
+.count { font-variant-numeric: tabular-nums; color: var(--fg); }
+
+/* Filtros */
+.tools { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 84px); z-index: 40; padding-block: 12px; background: linear-gradient(var(--bg) 70%, transparent); }
+.tools-in { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.search { position: relative; flex: 1 1 260px; max-width: 360px; }
+.search input { width: 100%; min-height: 46px; padding: 10px 16px 10px 44px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: 400 1rem/1.3 var(--f-body); }
+.search input::placeholder { color: var(--dim); }
+.search input:focus { outline: none; border-color: var(--ember); }
+.search svg { position: absolute; left: 16px; top: 50%; translate: 0 -50%; width: 17px; height: 17px; color: var(--dim); pointer-events: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--muted); font: 700 var(--t-xs)/1 var(--f-body); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: color .2s, border-color .2s, background .2s; }
+.chip b { font-weight: 400; color: var(--dim); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+.chip:hover { color: var(--fg); border-color: var(--line-hot); }
+.chip[aria-pressed="true"] { color: var(--on-accent); background: var(--accent); border-color: var(--accent); }
+.chip[aria-pressed="true"] b { color: rgba(255,246,244,.75); }
+@media (max-width: 640px) {
+  .tools { position: static; }
+  .search { max-width: none; flex-basis: 100%; }
+  .chips { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--gutter-l)) calc(-1 * var(--gutter-r)); padding-inline: var(--gutter-l) var(--gutter-r); scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { flex: none; }
+}
+
+/* Estante */
+.shelf { padding-block: 24px 96px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 28px 20px; }
+@media (max-width: 520px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; } }
+.book { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.cover { position: relative; aspect-ratio: 2 / 3; border-radius: 4px 10px 10px 4px; overflow: hidden; padding: 12% 11% 10% 14%; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; color: var(--c-fg, #f2ebe8); background: var(--c-bg); box-shadow: 0 18px 30px -18px rgba(0,0,0,.9), inset 6px 0 0 rgba(0,0,0,.35), inset 7px 0 0 rgba(255,255,255,.06); transition: translate .35s var(--ease-out), box-shadow .35s; }
+.cover::before { content: ""; position: absolute; inset: 7% 7% 7% 10%; border: 1px solid var(--c-line, rgba(255,75,62,.35)); border-radius: 2px; pointer-events: none; }
+.cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, rgba(255,255,255,.07), transparent 30%, transparent 70%, rgba(0,0,0,.25)); pointer-events: none; }
+.cover .c-tag { font: 700 0.6875rem/1.2 var(--f-body); letter-spacing: .18em; text-transform: uppercase; color: var(--c-accent, var(--ember)); }
+.cover .c-title { font-family: var(--f-display); font-weight: 700; font-size: clamp(1.05rem, 0.9rem + 0.6vw, 1.35rem); line-height: 1.12; letter-spacing: -0.005em; overflow-wrap: anywhere; hyphens: auto; }
+.cover .c-rule { width: 28px; height: 1px; background: var(--c-accent, var(--ember)); }
+.cover .c-author { font: 400 0.75rem/1.3 var(--f-body); letter-spacing: .12em; text-transform: uppercase; color: var(--c-muted, #a3918d); }
+.cover .c-mark { width: 22px; opacity: .55; }
+.cover .c-foot { display: flex; align-items: end; justify-content: space-between; gap: 8px; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .book:hover .cover { translate: 0 -6px; box-shadow: 0 26px 40px -20px rgba(227,25,29,.45), inset 6px 0 0 rgba(0,0,0,.35), inset 7px 0 0 rgba(255,255,255,.06); }
+}
+.t-poder { --c-bg: radial-gradient(120% 80% at 80% 0%, #6d0b0e, #2a0405 60%, #140203); --c-accent: #ff6a5e; --c-line: rgba(255,106,94,.4); }
+.t-estrategia { --c-bg: linear-gradient(160deg, #1e0c0b, #0b0505 70%); --c-accent: #ff4b3e; }
+.t-persuasao { --c-bg: linear-gradient(165deg, #e9dfd6, #cbbdb2); --c-fg: #1a0b0a; --c-muted: #5d4a46; --c-accent: #b3121a; --c-line: rgba(179,18,26,.35); }
+.t-manipulacao { --c-bg: repeating-linear-gradient(135deg, #140808 0 10px, #170a0a 10px 20px); --c-accent: #e3191d; --c-line: rgba(227,25,29,.45); }
+.t-comportamento { --c-bg: linear-gradient(180deg, #2b1616, #120808); --c-accent: #f0a59c; --c-line: rgba(240,165,156,.3); }
+.t-psicologia { --c-bg: radial-gradient(90% 60% at 50% 100%, #3a0a0f, #0d0405 70%); --c-accent: #d9c7c2; --c-muted: #9f8b87; --c-line: rgba(217,199,194,.22); }
+.t-filosofia { --c-bg: linear-gradient(170deg, #f2ebe8, #d8ccc6); --c-fg: #120707; --c-muted: #5a4743; --c-accent: #120707; --c-line: rgba(18,7,7,.25); }
+.t-persuasao .c-mark, .t-filosofia .c-mark { filter: invert(1); }
+
+.meta { display: grid; gap: 6px; }
+.meta h3 { font: 700 var(--t-base)/1.3 var(--f-body); }
+.meta .by { font-size: var(--t-sm); color: var(--muted); }
+.meta p { font-size: var(--t-sm); line-height: 1.55; color: var(--muted); }
+.open { margin-top: auto; align-self: start; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line-hot); background: transparent; color: var(--fg); font: 700 var(--t-sm)/1 var(--f-body); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background .2s, border-color .2s; }
+.open:hover { border-color: var(--ember); background: rgba(227,25,29,.1); }
+.open svg { width: 14px; height: 14px; }
+@media (max-width: 520px) {
+  .meta p { display: none; }
+  .open { width: 100%; justify-content: center; padding: 0 10px; }
+}
+.empty { padding: 48px 0; color: var(--muted); text-align: center; }
+.empty button { margin-top: 14px; }
+
+footer { border-top: 1px solid var(--line); }
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; padding-block: 28px; font-size: var(--t-sm); color: var(--dim); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .book { animation: rise .5s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 30ms); }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="./" aria-label="Academia do Poder, página inicial"><img src="data:image/png;base64,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" alt=""><span>ACADEMIA DO PODER</span></a>
+    <a class="back" href="./">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+      Voltar ao site
+    </a>
+  </div>
+</header>
+
+<main>
+  <section class="intro">
+    <div class="wrap intro-in">
+      <span class="label">Biblioteca dos membros</span>
+      <h1>A estante <em>da Academia.</em></h1>
+      <p><span class="count" id="total">37</span> livros sobre poder, estratégia, persuasão e comportamento humano, escolhidos pela Academia e recomendados pelos membros. Cada um traz o tema e uma síntese do que você vai encontrar.</p>
+    </div>
+  </section>
+
+  <div class="tools">
+    <div class="wrap tools-in">
+      <label class="search" for="q">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Buscar título ou autor" autocomplete="off" aria-label="Buscar título ou autor">
+      </label>
+      <div class="chips" id="chips" role="group" aria-label="Filtrar por tema"></div>
+    </div>
+  </div>
+
+  <section class="shelf" aria-label="Livros">
+    <div class="wrap">
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="empty" hidden>
+        <p>Nenhum livro encontrado com esse filtro.</p>
+        <button class="open" type="button" id="reset">Ver todos os livros</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 Academia do Poder · Biblioteca dos membros</span>
+    <a class="back" href="./">Voltar ao site</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  const BOOKS = [["As 48 Leis do Poder", "Robert Greene", "Poder", "O livro-base da Academia: 48 princípios sobre poder, reputação e posicionamento, cada um ilustrado com episódios históricos."], ["Leis Diárias", "Robert Greene", "Poder", "Uma lição curta para cada dia do ano, reunindo as ideias centrais dos livros do autor."], ["A 50ª Lei", "50 Cent e Robert Greene", "Poder", "O destemor como vantagem estratégica, contado a partir da trajetória do rapper 50 Cent."], ["33 Estratégias de Guerra", "Robert Greene", "Estratégia", "Princípios da guerra aplicados aos conflitos do cotidiano: defesa, ataque, alianças e guerra psicológica."], ["Maestria", "Robert Greene", "Estratégia", "O caminho do aprendiz ao domínio de uma área, construído a partir da vida de grandes mestres da história."], ["A Arte da Guerra", "Sun Tzu", "Estratégia", "O tratado chinês clássico sobre terreno, posicionamento e a ideia de vencer sem precisar lutar."], ["A Arte da Sedução", "Robert Greene", "Persuasão", "Os tipos de sedutor e as etapas de uma sedução, lidos como um estudo de influência e atração."], ["As Armas da Persuasão", "Robert B. Cialdini", "Persuasão", "Os princípios que levam alguém a dizer sim: reciprocidade, compromisso, prova social, autoridade, afeição e escassez."], ["A Arte da Persuasão", "James Borg", "Persuasão", "Escuta, linguagem corporal e escolha de palavras como base para convencer no dia a dia."], ["A Arte de Persuadir", "Blaise Pascal e Michel de Montaigne", "Persuasão", "Dois clássicos franceses sobre convencer: o entendimento e a vontade em Pascal, a conversa em Montaigne."], ["Ganhar de Lavada", "Scott Adams", "Persuasão", "A eleição americana de 2016 analisada como um caso de persuasão em massa."], ["38 Estratégias para Vencer Qualquer Debate", "Arthur Schopenhauer", "Persuasão", "Um catálogo de artifícios para vencer uma discussão mesmo sem razão, útil sobretudo para reconhecê-los quando usados contra você."], ["Como Fazer Amigos e Influenciar Pessoas", "Dale Carnegie", "Persuasão", "O clássico das relações humanas: como ganhar a boa vontade das pessoas e influenciá-las sem atrito."], ["Como Convencer Alguém em 90 Segundos", "Nicholas Boothman", "Persuasão", "Primeira impressão e conexão rápida: o que acontece nos primeiros instantes de um encontro."], ["Manual de Persuasão do FBI", "Jack Schafer", "Persuasão", "Técnicas de um ex-agente do FBI para criar empatia e conquistar a confiança de desconhecidos."], ["A Linguagem Secreta do Carisma", "Vanessa Van Edwards", "Persuasão", "Os sinais verbais e não verbais que fazem alguém parecer confiável, competente e carismático."], ["Inteligência do Carisma", "Heni Ozi Cukier", "Persuasão", "O carisma tratado como uma habilidade que pode ser observada, entendida e treinada."], ["As Armas Ocultas da Manipulação", "Christophe Carré", "Manipulação", "As técnicas de manipulação mais comuns do cotidiano e como identificá-las antes de cair nelas."], ["Como Lidar com Pessoas Manipuladoras", "George K. Simon", "Manipulação", "As táticas da agressividade encoberta e as respostas que tiram a força de quem manipula."], ["Cercado de Psicopatas", "Thomas Erikson", "Manipulação", "Como reconhecer manipuladores no trabalho e na vida pessoal, e como se proteger deles."], ["Cercado de Idiotas", "Thomas Erikson", "Comportamento", "Quatro perfis de comportamento e como se comunicar de forma eficaz com cada um deles."], ["A Arte de Ler Mentes", "Henrik Fexeus", "Comportamento", "Linguagem corporal e sinais sutis para perceber o que os outros pensam e sentem."], ["A Arte de Conquistar Superpoderes Mentais", "Henrik Fexeus", "Comportamento", "Técnicas da tradição do mentalismo para treinar atenção, memória e observação."], ["Jogos de Poder", "Henrik Fexeus", "Comportamento", "Os jogos de status que acontecem em toda interação, e como percebê-los e conduzi-los."], ["A Linguagem das Emoções", "Paul Ekman", "Comportamento", "Como as emoções aparecem no rosto e no corpo, pelo pesquisador que mapeou as expressões faciais."], ["Inteligência Emocional", "Daniel Goleman", "Comportamento", "Por que autocontrole, empatia e motivação pesam tanto quanto a inteligência racional."], ["Inteligência Social", "Daniel Goleman", "Comportamento", "Como as pessoas se afetam mutuamente nas interações e o que isso significa para as relações."], ["A Sabedoria dos Psicopatas", "Kevin Dutton", "Psicologia", "Quais traços psicopáticos, em dose controlada, ajudam a ter sucesso, e quais destroem quem os tem."], ["Mentes Maquiavélicas", "Tamás Bereczkei", "Psicologia", "O maquiavelismo estudado pela ciência como traço de personalidade: como funciona e como se manifesta."], ["O Ego e os Mecanismos de Defesa", "Anna Freud", "Psicologia", "O estudo clássico sobre os mecanismos que a mente usa para se proteger da angústia."], ["O Livro Vermelho", "Carl Gustav Jung", "Psicologia", "O registro pessoal das experiências interiores de Jung, que deu origem à sua obra posterior."], ["Anima", "James Hillman", "Psicologia", "Um estudo junguiano sobre a anima, a figura interior que liga consciência e inconsciente."], ["Arquétipos da Sombra", "Joanna LaPrade", "Psicologia", "A sombra junguiana e os arquétipos que ela assume nos padrões de comportamento."], ["Mapas do Significado", "Jordan B. Peterson", "Psicologia", "Mitos, crenças e narrativas como a estrutura com que o ser humano dá sentido ao mundo."], ["O Livro dos Símbolos", "Taschen / ARAS", "Psicologia", "Uma enciclopédia ilustrada de símbolos e dos significados que eles carregam em diferentes culturas."], ["A Arte da Prudência", "Baltasar Gracián", "Filosofia", "Aforismos do século XVII sobre discrição, reputação e conduta entre pessoas poderosas."], ["A Virtude do Egoísmo", "Ayn Rand", "Filosofia", "Ensaios que defendem o interesse próprio racional como fundamento da ética."]];
+  const MARK = "data:image/png;base64,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";
+  const THEMES = ["Poder", "Estratégia", "Persuasão", "Manipulação", "Comportamento", "Psicologia", "Filosofia"];
+  const slug = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const grid = document.getElementById("grid"), chips = document.getElementById("chips"), q = document.getElementById("q");
+  const empty = document.getElementById("empty"), total = document.getElementById("total");
+  total.textContent = BOOKS.length;
+
+  const cards = BOOKS.map(([title, author, theme, text], i) => {
+    const el = document.createElement("article");
+    el.className = "book"; el.style.setProperty("--i", i % 12);
+    el.dataset.theme = theme; el.dataset.search = slug(title + " " + author);
+    el.innerHTML = `
+      <div class="cover t-${slug(theme)}" aria-hidden="true">
+        <span class="c-tag"></span>
+        <div style="display:grid;gap:10px"><span class="c-title"></span><span class="c-rule"></span></div>
+        <div class="c-foot"><span class="c-author"></span><img class="c-mark" src="${MARK}" alt=""></div>
+      </div>
+      <div class="meta">
+        <span class="label"></span>
+        <h3></h3>
+        <span class="by"></span>
+        <p></p>
+      </div>
+      <button class="open" type="button">Acessar livro
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </button>`;
+    el.querySelector(".c-tag").textContent = theme;
+    el.querySelector(".c-title").textContent = title;
+    el.querySelector(".c-author").textContent = author;
+    el.querySelector(".meta .label").textContent = theme;
+    el.querySelector("h3").textContent = title;
+    el.querySelector(".by").textContent = author;
+    el.querySelector(".meta p").textContent = text;
+    el.querySelector(".open").setAttribute("aria-label", "Acessar livro: " + title);
+    grid.appendChild(el);
+    return el;
+  });
+
+  let theme = "Todos";
+  const mkChip = (name, n) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", String(name === theme));
+    b.innerHTML = "<span></span><b></b>"; b.firstChild.textContent = name; b.lastChild.textContent = n;
+    b.addEventListener("click", () => { theme = name; chips.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(c === b))); apply(); });
+    chips.appendChild(b);
+  };
+  mkChip("Todos", BOOKS.length);
+  THEMES.forEach(t => { const n = BOOKS.filter(b => b[2] === t).length; if (n) mkChip(t, n); });
+
+  function apply() {
+    const term = slug(q.value.trim());
+    let shown = 0;
+    cards.forEach(c => {
+      const ok = (theme === "Todos" || c.dataset.theme === theme) && (!term || c.dataset.search.includes(term));
+      c.hidden = !ok; if (ok) shown++;
+    });
+    empty.hidden = shown > 0;
+  }
+  q.addEventListener("input", apply);
+  document.getElementById("reset").addEventListener("click", () => { q.value = ""; theme = "Todos"; chips.querySelectorAll(".chip").forEach((c, i) => c.setAttribute("aria-pressed", String(i === 0))); apply(); });
+})();
+</script>
+
+</body>
+</html>
