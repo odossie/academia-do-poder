@@ -479,6 +479,16 @@ html { scrollbar-color: var(--line-hot) var(--bg); scrollbar-width: thin; }
   .sound.on .bars i:nth-child(1) { height: 7px; } .sound.on .bars i:nth-child(2) { height: 12px; }
   .sound.on .bars i:nth-child(3) { height: 9px; } .sound.on .bars i:nth-child(4) { height: 5px; }
 }
+
+/* ---------- Condições da oferta e identificação do vendedor ---------- */
+.terms { margin: 0; display: grid; border-top: 1px solid var(--line); }
+.terms > div { display: grid; grid-template-columns: 9.5rem 1fr; gap: 4px 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.terms dt { font: 500 var(--t-xs)/1.5 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ember); padding-top: 2px; }
+.terms dd { margin: 0; color: var(--muted); font-size: var(--t-sm); line-height: 1.55; }
+@media (max-width: 480px) { .terms > div { grid-template-columns: 1fr; } }
+.seller { display: grid; gap: 2px; padding-top: 20px; font-size: var(--t-sm); line-height: 1.55; color: var(--muted); }
+.seller p { margin: 0; }
+.seller strong { color: var(--fg); font-weight: 600; }
 </style>
 </head>
 <body>
@@ -681,10 +691,17 @@ html { scrollbar-color: var(--line-hot) var(--bg); scrollbar-width: thin; }
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><div><strong>Sala de Estratégia.</strong> <span>48 Leis do Poder, Persuasão e Teoria dos Jogos.</span></div></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><div><strong>Lounge &amp; Networking.</strong> <span>Conexão e oportunidades entre membros.</span></div></li>
           </ul>
+          <dl class="terms" aria-label="Condições da assinatura">
+            <div><dt>Cobrança</dt><dd>R$ 97,00 por mês, cobrados de forma recorrente a partir da data da compra, até o cancelamento.</dd></div>
+            <div><dt>Pagamento</dt><dd>Processado pela plataforma Cakto, nas formas exibidas no checkout.</dd></div>
+            <div><dt>Acesso</dt><dd>Liberado após a confirmação do pagamento.</dd></div>
+            <div><dt>Cancelamento</dt><dd>A qualquer momento, sem multa. As cobranças seguintes deixam de ser feitas.</dd></div>
+            <div><dt>Arrependimento</dt><dd>Até 7 dias após a compra, com devolução integral do valor pago.</dd></div>
+          </dl>
           <a class="btn btn-solid js-buy" href="#acesso">Assinar por R$ 97,00/mês
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
           </a>
-          <p class="fine">Direito de arrependimento em até 7 dias, conforme o Código de Defesa do Consumidor.</p>
+          <p class="fine">Cancelamento e arrependimento pela plataforma Cakto ou pelo direct do Instagram @nerofreitasoficial, com resposta em até 5 dias.</p>
         </div>
         <div class="side">
           <span class="room-tag">Para quem é</span>
@@ -706,8 +723,10 @@ html { scrollbar-color: var(--line-hot) var(--bg); scrollbar-width: thin; }
       <div class="faq">
         <details><summary>Onde a comunidade acontece?</summary><p>No WhatsApp. Depois que o pagamento é confirmado, você recebe o acesso à comunidade.</p></details>
         <details><summary>O que está incluído na assinatura?</summary><p>As aulas, a Sala de Estratégia (48 Leis do Poder, Persuasão e Teoria dos Jogos) e o Lounge &amp; Networking.</p></details>
-        <details><summary>Quanto custa?</summary><p>R$ 97,00 por mês.</p></details>
-        <details><summary>E se eu me arrepender?</summary><p>Compras feitas pela internet têm direito de arrependimento em até 7 dias após a contratação, conforme o artigo 49 do Código de Defesa do Consumidor.</p></details>
+        <details><summary>Quanto custa?</summary><p>R$ 97,00 por mês, cobrados de forma recorrente a partir da data da compra, até você cancelar. O pagamento é processado pela plataforma Cakto, nas formas exibidas no checkout.</p></details>
+        <details><summary>Como cancelo?</summary><p>A qualquer momento e sem multa, pela plataforma Cakto ou pelo atendimento. As cobranças seguintes deixam de ser feitas, e o acesso continua até o fim do período já pago.</p></details>
+        <details><summary>E se eu me arrepender?</summary><p>Você pode desistir em até 7 dias após a compra e receber de volta todo o valor pago, conforme o artigo 49 do Código de Defesa do Consumidor. Peça pela plataforma Cakto, a mesma usada na compra, ou pelo atendimento. Se o pagamento foi no cartão, a cobrança é estornada na fatura.</p></details>
+        <details><summary>Como falo com o atendimento?</summary><p>Pelo direct do Instagram @nerofreitasoficial. Toda solicitação é respondida em até 5 dias.</p></details>
       </div>
     </div>
   </section>
@@ -749,7 +768,7 @@ html { scrollbar-color: var(--line-hot) var(--bg); scrollbar-width: thin; }
 <script>
 /* ===== Configuração ===== */
 const CONFIG = {
-  checkoutUrl: "",                   // link de pagamento. Vazio = botões abrem o direct do Instagram
+  checkoutUrl: "https://pay.cakto.com.br/37y86x9_1292310",   // link de pagamento. Vazio = botões abrem o direct do Instagram
   instagram: "nerofreitasoficial"    // @ do perfil, sem a arroba
 };
 
