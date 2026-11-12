@@ -6,6 +6,20 @@
 <title>Academia do Poder</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Comunidade no WhatsApp para estudar e aplicar as 48 Leis do Poder, persuasão e teoria dos jogos. R$ 97,00 por mês.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Academia do Poder">
+<meta property="og:url" content="https://odossie.github.io/academia-do-poder/">
+<meta property="og:title" content="Academia do Poder · Quem não estuda o jogo vira peça dele.">
+<meta property="og:description" content="Comunidade no WhatsApp para estudar e aplicar as 48 Leis do Poder, persuasão e teoria dos jogos. Aulas, Sala de Estratégia e Lounge. R$ 97,00 por mês.">
+<meta property="og:image" content="https://odossie.github.io/academia-do-poder/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Academia do Poder: Quem não estuda o jogo vira peça dele. R$ 97,00 por mês.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#050303">
+<link rel="canonical" href="https://odossie.github.io/academia-do-poder/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap">
@@ -906,8 +920,10 @@ const CONFIG = {
      Liga sozinha quando o navegador permite; senão, no primeiro toque, clique ou tecla do visitante. */
   const soundBtn = document.getElementById("sound");
   if (soundBtn) {
+    /* O arquivo só começa a baixar depois que a página terminou de carregar, ou no primeiro toque */
     const audio = new Audio();
-    audio.src = "music.mp3"; audio.loop = true; audio.preload = "auto";
+    audio.loop = true; audio.preload = "none";
+    const ensureSrc = () => { if (!audio.getAttribute("src")) { audio.preload = "auto"; audio.src = "music.mp3"; } };
     const TARGET = 0.6;
     let on = true, running = false, fadeRaf = 0;
     /* A pausa vale só para esta visita: na próxima, a trilha recomeça ligada */
@@ -932,6 +948,7 @@ const CONFIG = {
     }
     function tryStart() {
       if (!on || running || document.hidden) return;
+      ensureSrc();
       try { audio.volume = 0; } catch (_) {}
       const p = audio.play();
       Promise.resolve(p).then(() => {
@@ -962,7 +979,11 @@ const CONFIG = {
     /* Volta do histórico (botão voltar) também religa */
     addEventListener("pageshow", e => { if (e.persisted && on) { arm(); tryStart(); setUI(); } });
     setUI();
-    if (on) { arm(); tryStart(); }
+    if (on) {
+      arm();
+      const idle = () => (window.requestIdleCallback ? requestIdleCallback(tryStart, { timeout: 2000 }) : setTimeout(tryStart, 300));
+      if (document.readyState === "complete") idle(); else addEventListener("load", idle, { once: true });
+    }
   }
 
   /* Seção atual destacada na navegação */
