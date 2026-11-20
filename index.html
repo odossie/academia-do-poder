@@ -508,7 +508,133 @@ html { scrollbar-color: var(--line-hot) var(--bg); scrollbar-width: thin; }
 .seller strong { color: var(--fg); font-weight: 600; }
 </style>
 </head>
-<body>
+
+<!-- TABULEIRO DO PODER -->
+<style>
+.board-label {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.board-label strong { color: var(--ember); }
+.board-label span { color: var(--muted); }
+
+.laws {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 3px;
+  padding: 9px;
+  border: 1px solid #6a2929;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #290f0f, #090404);
+  box-shadow: 0 20px 45px rgba(0,0,0,.45);
+}
+
+.laws button {
+  aspect-ratio: 1;
+  min-height: 36px;
+  border-radius: 2px;
+  background: #100707;
+  border: 1px solid rgba(255,230,220,.1);
+  color: #e8d7d0;
+  font-size: clamp(11px, 1.1vw, 14px);
+  font-weight: 600;
+  touch-action: manipulation;
+}
+
+/* Casas alternadas: 8 colunas */
+.laws button:is(
+  :nth-child(16n+1),
+  :nth-child(16n+3),
+  :nth-child(16n+5),
+  :nth-child(16n+7),
+  :nth-child(16n+10),
+  :nth-child(16n+12),
+  :nth-child(16n+14),
+  :nth-child(16n+16)
+) { background: #321716; }
+
+.laws button.on {
+  background: #642321;
+  color: #fff;
+  border-color: #a73936;
+}
+
+.laws button:hover,
+.laws button:focus-visible {
+  background: #8d2424;
+  color: #fff;
+  border-color: var(--ember);
+}
+
+.laws button.sel,
+.laws button.sel:hover {
+  background: var(--accent);
+  border-color: var(--ember);
+  color: #fff;
+  box-shadow: inset 0 0 12px rgba(255,255,255,.16),
+              0 0 18px rgba(227,25,29,.65);
+}
+
+@media (max-width: 520px) {
+  .laws {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 3px;
+    padding: 6px;
+  }
+  .laws button {
+    min-height: 40px;
+    background: #100707;
+    font-size: 12px;
+  }
+  .laws button:is(
+    :nth-child(12n+1),
+    :nth-child(12n+3),
+    :nth-child(12n+5),
+    :nth-child(12n+8),
+    :nth-child(12n+10),
+    :nth-child(12n+12)
+  ) { background: #321716; }
+
+  .laws button.on { background: #642321; }
+  .laws button.sel,
+  .laws button.sel:hover {
+    background: var(--accent);
+  }
+}
+</style>
+
+<script>
+(() => {
+  const board = document.getElementById("laws");
+  if (!board || document.querySelector(".board-label")) return;
+
+  const label = document.createElement("div");
+  label.className = "board-label";
+
+  const title = document.createElement("strong");
+  title.textContent = "♟ TABULEIRO DO PODER";
+
+  const hint = document.createElement("span");
+  hint.textContent = "48 casas · 48 leis";
+
+  label.append(title, hint);
+  board.before(label);
+
+  board.setAttribute(
+    "aria-label",
+    "Tabuleiro interativo das 48 Leis do Poder"
+  );
+})();
+</script>
+  <body>
 
 
 <header class="nav">
